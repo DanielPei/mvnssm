@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.daniel.logs.OperationLogger;
 import com.daniel.pojo.User;
 import com.daniel.service.IUserService;
 
@@ -19,16 +20,20 @@ public class UserController {
 	@Resource
 	private IUserService userService;
 	
+	
+	@OperationLogger(modelName = "UserController", option = "showUser")
 	@RequestMapping("/showUser")
 	public String toIndex(HttpServletRequest request,Model model){
 		int userId = Integer.parseInt(request.getParameter("id"));
 		User user = this.userService.getUserById(userId);
 		model.addAttribute("user", user);
+		System.out.println("showuser");
 		return "showUser";
 		
 //		http://localhost/mvnssm/user/showUser.do?id=1
 	}
 	
+	@OperationLogger(modelName = "UserController", option = "showUserContent")
 	@RequestMapping("/showUserContent")
 	public @ResponseBody HashMap<String, Object> getUserById(HttpServletRequest request){
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
